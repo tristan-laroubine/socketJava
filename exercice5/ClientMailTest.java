@@ -1,14 +1,14 @@
 package exercice5;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.Socket;
 
+
+
 public class ClientMailTest {
+
     public static void main(String argv[]) throws Exception {
-        String modifiedSentence;
+        String modifiedSentence = "";
 
 
 
@@ -22,33 +22,46 @@ public class ClientMailTest {
 
 
             out.write("EHLO jupiter");
-            out.newLine();
+        modifiedSentence = getString(modifiedSentence, inFromServer, out);
+            if (modifiedSentence.equals("erreur"))
+            {
+                return;
+            }
 
+        out.write("MAIL FROM: garfield");
+        modifiedSentence = getString(modifiedSentence, inFromServer, out);
+        if (modifiedSentence.equals("erreur"))
+        {
+            return;
+        }
 
+        out.write("RCPT TO: laroubine");
+        modifiedSentence = getString(modifiedSentence, inFromServer, out);
+        if (modifiedSentence.equals("erreur"))
+        {
+            return;
+        }
+        out.write("DATA");
+        modifiedSentence = getString(modifiedSentence, inFromServer, out);
+        if (modifiedSentence.equals("erreur"))
+        {
+            return;
+        }
+        out.write("FROM: garfield");
+        modifiedSentence = getString(modifiedSentence, inFromServer, out);
+        if (modifiedSentence.equals("erreur"))
+        {
+            return;
+        }
+        out.write("TO: laroubine");
+        modifiedSentence = getString(modifiedSentence, inFromServer, out);
 
-            out.write("MAIL FROM: garfield");
-            out.newLine();
+        out.write("SUBJECT: Lasagnes");
+        modifiedSentence = getString(modifiedSentence, inFromServer, out);
 
-
-            out.write("RCPT TO: laroubine");
-            out.newLine();
-
-            out.write("DATA");
-            out.newLine();
-
-            out.write("FROM: garfield");
-            out.newLine();
-
-            out.write("TO: laroubine");
-            out.newLine();
-
-            out.write("SUBJECT: Lasagnes");
-            out.newLine();
-
-            out.write("Coucou Dorians,");
-            out.newLine();
-
-            out.write("DSL Mé t'es PAS TROP BO");
+        out.write("Coucou Dorians,");
+        modifiedSentence = getString(modifiedSentence, inFromServer, out);
+        out.write("TEST");
             out.newLine();
 
             out.write("Bye");
@@ -64,8 +77,7 @@ public class ClientMailTest {
             out.flush();
 
 
-
-
+        System.out.println(modifiedSentence);
             modifiedSentence = inFromServer.readLine();
 
 
@@ -78,6 +90,27 @@ public class ClientMailTest {
 
         }
 
+    private static String getString(String modifiedSentence, BufferedReader inFromServer, BufferedWriter out) throws IOException {
+        out.newLine();
 
+        out.flush();
+        while(true)
+        {
+            String temp = inFromServer.readLine();
+            modifiedSentence = modifiedSentence + "\n" + temp;
+            if (!temp.substring(2,3).equals("-"))
+            {
+
+                if(temp.substring(3,4).equals(4) || temp.substring(3,4).equals(5))
+                {
+                    modifiedSentence = "erreur";
+
+                }
+                break;
+            }
+
+        }
+        return modifiedSentence;
+    }
 
 }
