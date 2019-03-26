@@ -97,6 +97,7 @@ public class ClientMailTest {
         while(true)
         {
             String temp = inFromServer.readLine();
+            if(temp == null)break;
             modifiedSentence = modifiedSentence + "\n" + temp;
             if (!temp.substring(2,3).equals("-"))
             {

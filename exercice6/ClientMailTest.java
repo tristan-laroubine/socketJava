@@ -29,16 +29,22 @@ public class ClientMailTest {
             out.write("PASS laroubine");
             out.newLine();
             out.flush();
-        modifiedSentence = modifiedSentence +  inFromServer.readLine();
+            modifiedSentence = modifiedSentence +  inFromServer.readLine();
             out.write("LIST");
             out.newLine();
             out.flush();
-        modifiedSentence = modifiedSentence +  inFromServer.readLine();
+            String tempLine = inFromServer.readLine();
+            while (tempLine == ".")
+        {
+            modifiedSentence = modifiedSentence + tempLine;
+            tempLine = inFromServer.readLine();
+        }
+            modifiedSentence = modifiedSentence +  inFromServer.readLine();
             out.write("RETR 3");
             out.newLine();
             out.flush();
 
-        modifiedSentence = modifiedSentence +  inFromServer.readLine();
+            modifiedSentence = modifiedSentence +  inFromServer.readLine();
 
 
 
